@@ -12,9 +12,8 @@ my $name = <STDIN>;
 
 chomp $name;
 
-my $refactory = Devel::Refactor->new($name, $clipboard);
+my $refactory = Devel::Refactor->new($name, $clipboard, 1);
 
-    
 my $retval = $refactory->get_sub_call();
 $retval .= $refactory->get_new_code();
 

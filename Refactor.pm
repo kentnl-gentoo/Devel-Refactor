@@ -25,7 +25,7 @@ our @EXPORT = qw(
 	
 );
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 our $DEBUG = 0;
 # Preloaded methods go here.
@@ -35,6 +35,7 @@ sub new() {
     my $class        = shift;
     my $sub_name     = shift;
     my $code_snippet = shift;
+    my $syntax_check = shift;
     $DEBUG           = shift;
 
     $DEBUG and print STDERR "sub name : $sub_name\n";
@@ -45,6 +46,7 @@ sub new() {
         code_snippet    => $code_snippet,
         return_snippet  => '',
         return_sub_call => '',
+        eval_err        => '',
         scalar_vars     => {},
         array_vars      => {},
         hash_vars       => {},
@@ -60,7 +62,11 @@ sub new() {
     $self->_parse_vars();
     $self->_parse_local_vars();
     $self->_transform_snippet();
- 
+    
+    if ($syntax_check){
+        $self->_syntax_check();
+    }
+    
     return $self;
 }
 
@@ -231,10 +237,10 @@ sub _transform_snippet {
     $return_call .= ");\n";
     
     $retval  = "sub ".$self->{sub_name}." {\n";
-    $retval .= join '', map { $_ =~ tr/%@/$/; "    my $_ = shift;\n" } @{$self->{parms}};
+    $retval .= join '', map {($tmp = $_) =~ tr/%@/$/; "    my $tmp = shift;\n" } @{$self->{parms}};
     $retval .= "\n" . $self->{code_snippet};
     $retval .= "\n    return (";
-    $retval .= join ', ', map {$_ =~ s/([\@\%].*)/\\$1/; $_ } sort @{$self->{retvals}};
+    $retval .= join ', ', map {my $tmp; ($tmp = $_) =~ s/[\@\%](.*)/\$$1/; $tmp} sort @{$self->{retvals}};
     $retval .= ");\n";
     $retval .= "}\n";
 
@@ -259,6 +265,41 @@ sub get_sub_call{
     return $self->{return_sub_call};
 }
 
+sub _syntax_check{
+    my $self = shift;
+    my $tmp;
+    
+    my $eval_stmt = "my (". join ', ', @{$self->{parms}};
+    $eval_stmt .= ");\n";
+    $eval_stmt .= $self->get_sub_call();
+    $eval_stmt .= $self->get_new_code();
+    
+    $self->{eval_code} = $eval_stmt;
+    
+    eval " $eval_stmt ";
+    if ($@) {
+        $self->{eval_err} = $@;
+        
+        my @errs = split /\n/, $self->{eval_err};
+        my @tmp = split /\n/, $self->{return_snippet};
+        my $line;
+        foreach my $err (@errs){
+            if ($err =~ /line\s(\d+)/){
+                $line = ($1 - 3);
+                $tmp[$line] .= " #<--- ".$err;
+            }
+        }
+        $self->{return_snippet} = join "\n", @tmp;
+        
+    }
+    
+}
+
+sub get_eval_results{
+    my $self = shift;
+    
+    return $self->{eval_err};
+}
 
 1;
 __END__
@@ -283,10 +324,10 @@ Perl module that facilitates refactoring Perl code.
 
 =head1 DESCRIPTION
 
-The Devel::Refactor module is for code refactoring.  Pass it a
+The Devel::Refactor module is for code refactoring.  Pass it
 a snippet of Perl code that belongs in its own subroutine as
-well as a name for that sub.  It figures our which variables
-need to be passed into the sub, and which variabels might be
+well as a name for that sub.  It figures out which variables
+need to be passed into the sub, and which variables might be
 passed back.  It then produces the sub along with a call to
 the sub.
 

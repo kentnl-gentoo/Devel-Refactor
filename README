@@ -1,14 +1,14 @@
-Devel/Refactor version 0.01
+Devel/Refactor version 0.02
 =========================
 
 The Devel::Refactor module is for code refactoring.  Pass it a
 a snippet of Perl code that belongs in its own subroutine as
-well as a name for that sub.  It figures our which variables
-need to be passed into the sub, and which variabels might be
+well as a name for that sub.  It figures out which variables
+need to be passed into the sub, and which variables might be
 passed back.  It then produces the sub along with a call to
 the sub.
 
-Included in this modules is an example script that pulls the
+Included in this module is an example script that pulls the
 snippet of code from the KDE clipboard in Linux and passes 
 back the transformed code the same way.
 

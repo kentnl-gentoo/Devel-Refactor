@@ -61,3 +61,7 @@ print LOG "\n";
 print LOG "Local Hashes: ";
 print LOG map {"$_ "} $refactory->get_local_hashes();
 print LOG "\n";
+print LOG "Syntax Check: ";
+print LOG $refactory->get_eval_results()."\n";
+print LOG $refactory->{eval_code}."\n";
+
