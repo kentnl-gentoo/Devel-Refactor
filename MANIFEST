@@ -1,8 +1,14 @@
 Changes
-Makefile.PL
 MANIFEST
+Makefile.PL
 README
 Refactor.pm
-t/1.t
 examples/factory.pl
-META.yml                                 Module meta-data (added by MakeMaker)
+t/basic.t
+t/extract_subroutine.t
+t/rename_subroutine.t
+t/test_subdirectory/testfile_3.pod
+t/testfile_1.pl
+t/testfile_2.pm
+test.pl
+META.yml                                Module meta-data (added by MakeMaker)

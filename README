@@ -1,4 +1,4 @@
-Devel/Refactor version 0.02
+Devel/Refactor version 0.04
 =========================
 
 The Devel::Refactor module is for code refactoring.  Pass it a
@@ -28,7 +28,7 @@ None.
 COPYRIGHT AND LICENCE
 
 
-Copyright (C) 2003 Scott Sotka
+Copyright (C) 2005 Scott Sotka
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
