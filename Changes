@@ -1,5 +1,8 @@
 Revision history for Perl extension Devel::Refactor.
 
+0.5 Thu March 17 14:47:00 PST 2005
+    + Fixed example/factory.pl to work with latest version of Refactor.
+
 0.4 Sun Feb  6 18:32:44 PST 2005
     + added  rename_subroutine
     + added several tests in t/

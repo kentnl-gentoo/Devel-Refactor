@@ -12,10 +12,10 @@ my $name = <STDIN>;
 
 chomp $name;
 
-my $refactory = Devel::Refactor->new($name, $clipboard, 1);
+my $refactory = Devel::Refactor->new;
+my ($new_sub_call,$new_code) = $refactory->extract_subroutine($name,$clipboard);
 
-my $retval = $refactory->get_sub_call();
-$retval .= $refactory->get_new_code();
+my $retval = $new_sub_call . $new_code;
 
 # protect quotes and dollar signs
 $retval =~ s/\"/\\"/g;
