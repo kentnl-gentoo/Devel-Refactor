@@ -1,0 +1,6 @@
+Revision history for Perl extension Devel::Refactor.
+
+0.01  Sat Dec 20 00:48:19 2003
+	- original version; created by h2xs 1.22 with options
+		-XA -n Devel::Refactor
+
