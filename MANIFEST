@@ -5,3 +5,4 @@ README
 Refactor.pm
 t/1.t
 examples/factory.pl
+META.yml                                 Module meta-data (added by MakeMaker)
