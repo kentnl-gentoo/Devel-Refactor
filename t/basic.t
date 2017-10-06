@@ -7,7 +7,7 @@ use Data::Dumper;
 
 BEGIN {
     # diag "\@INC contains:\n", join("\n",@INC);
-    use_ok 'Refactor';
+    use_ok 'Devel::Refactor';
 }
 
 my $rf = Devel::Refactor->new;
